@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-/** serves static assets */
+/** serves static assets (used under the hood in 'serve' package) */
 import handler from "serve-handler";
 
 /** A lightweight, fixed-size value buffer. */
@@ -17,7 +17,7 @@ function getMsgs() {
 }
 msg.push({
   user: "adam",
-  text: "hi",
+  text: "hello lunch and learn",
   time: Date.now(),
 });
 
@@ -73,7 +73,7 @@ server.on("request", async (req, res) => {
 });
 
 // start listening
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 server.listen(port, () =>
   console.log(
     `Server running at https://localhost:${port} - make sure you're on httpS, not http`
