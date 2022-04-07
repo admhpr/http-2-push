@@ -1,8 +1,23 @@
 ### HTTP/2 PUSH
 
-HTTP/2 does not work without HTTPS because all the browsers enforce that it must be a secure connection. Technically the spec doesn't require it but our stuff won't work otherwise so we need to quickly generate a self-signed certificate to use for our app.
+### Prerequisites
+
+Node >= v14.18.2
+
+#### Install packages
+
+`npm i`
+#### Run in dev mode
+
+`npm run dev`
+
+#### Start application
+
+`npm run start`
 
 ### Create a self signed certificate
+
+HTTP/2 does not work without HTTPS because all the browsers enforce that it must be a secure connection. Technically the spec doesn't require it but our stuff won't work otherwise so we need to quickly generate a self-signed certificate to use for our app.
 
 Ensure openssl is installed:
 
