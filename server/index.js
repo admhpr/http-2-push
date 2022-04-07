@@ -75,6 +75,7 @@ server.on("request", async (req, res) => {
     })
 
     res.end()
+    
     for(const stream of connections){
       stream.write(JSON.stringify({msg: getMsgs()}))
     }
