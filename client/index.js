@@ -4,6 +4,8 @@ const presence = document.getElementById("presence-indicator");
 
 // this will hold all the most recent messages
 let allChat = [];
+const SUCCESS_TEXT = "🟢 ✨";
+const ERROR_TEXT = "🔴 🙅‍♂️";
 
 chat.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -31,6 +33,7 @@ async function postNewMsg(user, text) {
 }
 
 async function getNewMsgs() {
+    // note: unidirectional stream server -> client, a bidirectional stream is a socket
     let reader;
     const utf8Decoder = new TextDecoder("utf-8");
     try {
@@ -40,7 +43,7 @@ async function getNewMsgs() {
         console.error(e);
     }
     // successful connection
-    presence.innerText = "🟢 ✨"
+    presence.innerText = SUCCESS_TEXT;
     let done;
     do {
         let readerResponse;
@@ -48,7 +51,7 @@ async function getNewMsgs() {
             readerResponse = await reader.read();
         } catch (e) {
             console.error(`fetch error: ${e}`)
-            presence.innerText = "🔴 🙅‍♂️";
+            presence.innerText = ERROR_TEXT;
         }
         const chunk = utf8Decoder.decode(readerResponse.value, { stream: true })
         done = readerResponse.done
@@ -59,7 +62,7 @@ async function getNewMsgs() {
                 render()
             } catch (e) {
                 console.error(`parse error: ${e}`)
-                presence.innerText = "🔴 🙅‍♂️";
+                presence.innerText = ERROR_TEXT;
             }
         }
     } while (!done);

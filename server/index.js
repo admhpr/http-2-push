@@ -37,10 +37,14 @@ server.on("stream", (stream, headers) => {
     stream.respond({ ":status": 200, "content-type": "text/plain; charset=utf-8" })
     // write first response
     stream.write(JSON.stringify({msg: getMsgs()}))
+    // track streams
+    connections.push(stream)
 
     // handle close
     stream.on("close", () => {
       console.log(`disconnected ${stream.id}`)
+      // only keep open streams (pointer check)
+      connections = connections.filter(s => s !== stream)
     })
   }
 })
@@ -64,11 +68,16 @@ server.on("request", async (req, res) => {
     const data = Buffer.concat(buffers).toString();
     const { user, text } = JSON.parse(data);
 
-    /*
-     *
-     * some code goes here
-     *
-     */
+    msg.push({
+      user,
+      text,
+      time: Date.now()
+    })
+
+    res.end()
+    for(const stream of connections){
+      stream.write(JSON.stringify({msg: getMsgs()}))
+    }
   }
 });
 
